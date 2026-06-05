@@ -23,7 +23,7 @@ void input() {
     d.resize(n + 1, 0);     // d[0] là depot nên không dùng, các khách là d[1] đến d[n]
     for (int i = 1; i <= n; i++) {
         cin >> d[i];        // Nhap so luong hang can giao
-    }   
+    }
     
     c.resize(n + 1);     // Tạo ma trận c kích thước (n + 1) x (n + 1)
     for (int i = 0; i <= n; i++) {
@@ -59,7 +59,7 @@ bool checkY(int v, int k) {
 bool checkX(int v, int k) {
     if (v == 0) return true;     // v = 0 nghia la xe quay ve kho
     if (visited[v]) return false;     // Khach da duoc phuc vu thi khong duoc phuc vu lai
-    if (loadTruck[k] + d[v] > Q) return false;     // Kiem tra rang buoc tai trong
+    if (loadTruck[k] + d[v] > Q) return false;     // Kiem tra rang buoc tai trong Q
 
     return true;
 }
@@ -89,8 +89,7 @@ void TryX(int s, int k) {
         return;
     }
 
-    // Thu chon diem tiep theo sau diem s
-    // v = 0 nghia la ket thuc lo trinh cua xe k va quay ve kho
+    // Thu chon diem tiep theo sau diem s, v = 0 nghia la ket thuc lo trinh cua xe k va quay ve kho
     for (int v = 0; v <= n; v++) {
         if (checkX(v, k)) {
             X[s] = v;
@@ -99,12 +98,10 @@ void TryX(int s, int k) {
             currentDist += c[s][v];
 
             if (v == 0) {
-                // Neu v = 0, xe k quay ve kho
-                // Sau do chuyen sang xe tiep theo
+                // Neu v = 0, xe k quay ve kho, sau do chuyen sang xe tiep theo
 
                 if (k == K) {
-                    // Neu day la xe cuoi cung
-                    // Chi cap nhat ket qua neu tat ca khach da duoc phuc vu
+                    // Ktra dk dung, va tinh ket qua
                     if (visitedCount == n) {
                         result = min(result, currentDist);
                     }
@@ -142,12 +139,9 @@ void TryX(int s, int k) {
 // TryY(k): chon khach dau tien cho xe k
 void TryY(int k) {
     /*
-        De tranh sinh trung lap do cac xe giong nhau,
-        ta ep cac khach dau tien cua cac xe khong rong tang dan.
-
+        De tranh sinh trung lap do cac xe giong nhau, ta ep cac khach dau tien cua cac xe khong rong tang dan.
         Vi du:
-        Xe 1 bat dau bang khach 2, xe 2 bat dau bang khach 5
-        thi ta khong can xet lai truong hop:
+        Xe 1 bat dau bang khach 2, xe 2 bat dau bang khach 5 thi ta khong can xet lai truong hop:
         Xe 1 bat dau bang khach 5, xe 2 bat dau bang khach 2
     */
 
@@ -171,8 +165,7 @@ void TryY(int k) {
             }
 
             if (k == K) {
-                // Sau khi da chon xong diem dau tien cho tat ca K xe,
-                // bat dau xay tiep tung lo trinh bang TryX
+                // Sau khi da chon xong diem dau tien cho tat ca K xe, bat dau xay tiep tung lo trinh bang TryX
                 if (boundOK()) {
                     TryX(Y[1], 1);
                 }
@@ -202,8 +195,7 @@ int main() {
 
     input();
 
-    // Neu tong nhu cau lon hon tong tai trong cua K xe
-    // thi chac chan khong co loi giai hop le
+    // Neu tong nhu cau lon hon tong tai trong cua K xe thi chac chan khong co loi giai hop le
     int totalDemand = 0;
     for (int i = 1; i <= n; i++) {
         totalDemand += d[i];
