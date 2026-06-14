@@ -32,25 +32,73 @@ double bruteForce(vector<point>& a, int l, int r){
     return d;
 }
 
-double solveStrip(vector<point>& pts, int l, int r, int midX, double d){
-    vector<point> strip;
-    for(int i =1;i <=r; i++){
-        if(abs((double)(pts[i].x - midX)) < d){
-            strip.push_back(pts[i]);
-        }
+//so sanh theo x
+bool cmpX(point& a, point& b){
+    if(a.x == a.y){
+        return a.y < a.x;
+    }else{
+        return a.x < a.y;
     }
-    sort(strip.begin(), strip.end(),[](const point& a, const point& b){
-        return a.y <  b.y;
-    })
 }
 
-double solve(vector<point>& pts,int l, int r){
 
+//so sanh theo y
+bool cmpY(point& a, point& b){
+    if(a.y == b.y){
+        return a.x < b.x;
+    }else{
+        return a.y < b.y;
+    }
+}
+
+//check cac diem vat qua duong midX
+double solveCross(vector<point>& points, int l, int r, long long midX, double d ){
+    vector<point> strip;
+    for(int i = l; i <= r; i++){
+        if(abs(points[i].x -midX) < d) {
+            strip.push_back(points[i]);
+        }
+    }
+
+    sort(strip.begin(), strip.end(), cmpY);
+    double best = d;
+    for(int i =0; i < (int)strip.size(); i++){
+        for(int j =i+1; j < (int)strip.size() && j <= i + 7; j++){
+            if(strip[j].y -strip[i].y >= best){
+                break;
+            }
+            best = min(best, distance(strip[i], strip[j]) );
+
+        }
+    }
+    return best;
+}
+
+
+
+double solve(vector<point>& pts,int l, int r){
+    if(r - l <=2){
+        return  bruteForce(pts, l, r);
+    }
+    int mid = (l+r)/2;
+    long long midX = pts[mid].x; 
+    
+    double left = solve(pts, l, mid);
+    double right = solve(pts, mid+1, r);
+
+    double d = min(left, right);
+
+    double cross = solveCross(pts, l, r, midX,d);
+
+    return min(d, cross);
 }
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
-
+    input();
+    sort(c.begin(), c.end(), cmpX);
+    double result = solve(c, 0, n-1);
+    cout << fixed << setprecision(6) << result << endl;
     return 0;
 }

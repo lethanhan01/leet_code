@@ -9,12 +9,13 @@ vector<int> visited(maxN,0);
 int currentDis = 0;
 vector<int> X;
 int result = INT_MAX;
-
+vector<int> Y;
 
 void input(){
     cin >> n;
     visited.resize(n);
     X.resize(n);
+    Y.resize(n);
     for(int i =0; i < n; i++){
         for(int j =0; j < n; j++){
             cin >> c[i][j];
@@ -62,7 +63,11 @@ int main(){
     cin.tie(nullptr);
     input();
     X[0]=0;
+    Y[0]=1;
     Try(1);
     cout << result << endl;
+    for(int i =0; i < n; i++){
+        cout << X[i] << " ";
+    }
     return 0;
 }
